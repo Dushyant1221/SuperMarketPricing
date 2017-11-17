@@ -1,0 +1,9 @@
+[
+{"discountedPrice":{"2":30,"7":120},"name":"A","price":20},
+{"discountedPrice":{"6":120},"name":"B","price":23},
+{"discountedPrice":{"4":120},"name":"C","price":40},
+{"discountedPrice":{"4":120},"name":"D","price":41},
+{"discountedPrice":{"15":120,"4":30,"10":90},"name":"E","price":10},
+{"name":"F","price":11},
+{"discountedPrice":{"2":30,"7":120},"name":"G","price":15},
+]
