@@ -16,7 +16,9 @@ kafka topic using Flink streaming API where it is stored by any external item co
 
 There is an Item class which contains all information like name, price and discounted price within it for each item.
 
-Checkout service is responsible for scanning items and computing price for all checked out items
+Thers is CheckedoutItemsByType class which contains all the information of all checkedout items of particular type.
+
+Checkout service is responsible for scanning items and computing price for all checked out items. Method scanAndAddItem adds the item in checkedoutout items whereas method scanAndRemoveItem removes the added item from the checkedoutout items object. getTotalPrice method calculates the sum of all checked out items.
 
 Test method checkoutServiceTest within CheckoutTest class is responsible for testing of item scan and price calculation 
 
