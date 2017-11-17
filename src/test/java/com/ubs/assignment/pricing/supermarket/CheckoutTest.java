@@ -8,7 +8,7 @@ import com.ubs.assignment.pricing.supermarket.service.CheckoutService;
 import com.ubs.assignment.pricing.supermarket.service.CheckoutServiceImpl;
 
 /**
- * Unit test for simple App.
+ * Unit test for CheckoutTest app
  */
 public class CheckoutTest {
 
@@ -24,24 +24,32 @@ public class CheckoutTest {
 	 */
 	@Test
 	public void checkoutServiceTest() {
-		checkoutService.scanItem("A");
-		checkoutService.scanItem("A");
-		checkoutService.scanItem("A");
-		checkoutService.scanItem("A");
-		checkoutService.scanItem("A");
-		checkoutService.scanItem("A");
-		checkoutService.scanItem("B");
-		checkoutService.scanItem("B");
-		checkoutService.scanItem("B");
-		checkoutService.scanItem("B");
-		checkoutService.scanItem("E");
-		checkoutService.scanItem("E");
-		checkoutService.scanItem("E");
-		checkoutService.scanItem("F");
-		Assert.assertNotNull(CheckoutService.checkedOutItems);
-		Assert.assertTrue(CheckoutService.checkedOutItems.size() == 4);
-		Assert.assertTrue(CheckoutService.checkedOutItems.get("A")==6);
-		Assert.assertTrue(checkoutService.getTotalPrice()==223);
-		
+		checkoutService.scanAndAddItem("A");
+		Assert.assertTrue(checkoutService.getCheckedOutItems().get("A").getItemsMap().get(1) ==20);
+		checkoutService.scanAndAddItem("A");
+		Assert.assertTrue(checkoutService.getCheckedOutItems().get("A").getItemsMap().get(2) ==10);
+		checkoutService.scanAndAddItem("A");
+		checkoutService.scanAndAddItem("A");
+		checkoutService.scanAndAddItem("B");
+		checkoutService.scanAndAddItem("B");
+		checkoutService.scanAndAddItem("B");
+		checkoutService.scanAndAddItem("A");
+		checkoutService.scanAndAddItem("A");
+		checkoutService.scanAndAddItem("B");
+		checkoutService.scanAndAddItem("B");
+		checkoutService.scanAndAddItem("B");
+		checkoutService.scanAndAddItem("B");
+		checkoutService.scanAndAddItem("E");
+		checkoutService.scanAndAddItem("A");
+		checkoutService.scanAndAddItem("A");
+		checkoutService.scanAndAddItem("E");
+		checkoutService.scanAndAddItem("E");
+		checkoutService.scanAndAddItem("F");
+		checkoutService.scanAndRemoveItem("A");
+		checkoutService.scanAndRemoveItem("B");
+		checkoutService.scanAndRemoveItem("F");
+		Assert.assertNotNull(checkoutService.getCheckedOutItems());
+		Assert.assertTrue(checkoutService.getCheckedOutItems().get("A").getTotalCount() == 7);
+		Assert.assertTrue(checkoutService.getTotalPrice()==270);
 	}
 }

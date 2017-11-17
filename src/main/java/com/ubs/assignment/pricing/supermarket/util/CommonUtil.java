@@ -30,16 +30,21 @@ public class CommonUtil {
 	private CommonUtil() {
 		
 	}
+	/** Utility method to load all items and their actual and discounted prices from the json file.
+	 * @return
+	 */
 	public static Map<String, Map<Integer, Integer>> loadAvailableItems() {
 		List<Item> items = new ArrayList<Item>();
 		Map<String, Map<Integer, Integer>> storeItemMap = new HashMap<String, Map<Integer,Integer>>();
 		JSONParser parser = new JSONParser();
 		try {
+			// parse json array
 			JSONArray jsonArray = (JSONArray) parser.parse(new FileReader("Items.json"));
 			for (int i = 0; i < jsonArray.size(); i++) {
 				JSONObject obj = (JSONObject) jsonArray.get(i);
 				items.add(MAPPER.readValue(obj.toString(), Item.class));
 			}
+			// logic to load store items in user defined data structure.
 			items.stream().forEach(item -> {
 				Map<Integer, Integer> discountedPrice = new TreeMap<>(Collections.reverseOrder());
 				discountedPrice.put(1, item.getPrice());

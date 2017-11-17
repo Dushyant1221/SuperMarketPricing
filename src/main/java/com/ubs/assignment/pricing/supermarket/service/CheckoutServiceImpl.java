@@ -1,36 +1,42 @@
 package com.ubs.assignment.pricing.supermarket.service;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.ubs.assignment.pricing.supermarket.dto.CheckedoutItemsByType;
+
 public class CheckoutServiceImpl implements CheckoutService {
 
-	public CheckoutServiceImpl() {
-		checkedOutItems.clear();
+	private Map<String, CheckedoutItemsByType> checkedOutItems = new HashMap<>();
+
+	@Override
+	public Map<String, CheckedoutItemsByType> getCheckedOutItems() {
+		return checkedOutItems;
 	}
 
 	@Override
-	public void scanItem(String itemName) {
+	public void scanAndAddItem(String itemName) {
 		if (availableStoreItems.containsKey(itemName)) {
-			checkedOutItems.computeIfAbsent(itemName, (name) -> 0);
-			checkedOutItems.compute(itemName, (name, count) -> count + 1);
+			checkedOutItems.computeIfAbsent(itemName, (name) -> new CheckedoutItemsByType(0, new HashMap<>()));
+			CheckedoutItemsByType itemsByType = checkedOutItems.get(itemName);
+			int calculatedTotalPrice = getComputedPrice(itemName, new AtomicInteger(itemsByType.getTotalCount() + 1));
+			int itemPrice = calculatedTotalPrice
+					- itemsByType.getItemsMap().values().stream().mapToInt(Number::intValue).sum();
+			itemsByType.setTotalCount(itemsByType.getTotalCount() + 1);
+			itemsByType.getItemsMap().put(itemsByType.getTotalCount(), itemPrice);
 		} else {
-			Logger.getLogger("scanItem").log(Level.WARNING, itemName + " not found in store, will not be added in to the bill");
+			Logger.getLogger("scanItem").log(Level.WARNING,
+					itemName + " not found in store, will not be added in to the bill");
 		}
 	}
 
 	@Override
 	public int getTotalPrice() {
-		AtomicInteger totalPrice = new AtomicInteger();
-		checkedOutItems
-				.entrySet()
-				.stream()
-				.forEach(
-						s -> totalPrice.set(totalPrice.get()
-								+ getComputedPrice(s.getKey(), new AtomicInteger(s.getValue()))));
-		return totalPrice.get();
+		return checkedOutItems.values().stream()
+				.mapToInt((k) -> k.getItemsMap().values().stream().mapToInt(Number::intValue).sum()).sum();
 	}
 
 	private int getComputedPrice(String itemName, AtomicInteger count) {
@@ -44,6 +50,19 @@ public class CheckoutServiceImpl implements CheckoutService {
 			}
 		});
 		return computedPrice.get();
+
+	}
+
+	@Override
+	public void scanAndRemoveItem(String itemName) {
+		if (checkedOutItems.containsKey(itemName)) {
+			CheckedoutItemsByType itemsByType = checkedOutItems.get(itemName);
+			itemsByType.getItemsMap().remove(itemsByType.getTotalCount());
+			itemsByType.setTotalCount(itemsByType.getTotalCount() - 1);
+		} else {
+			Logger.getLogger("scanItem").log(Level.WARNING,
+					itemName + " not found in already scanned items, will not be removed from the bill");
+		}
 
 	}
 }

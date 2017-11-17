@@ -12,20 +12,20 @@ public class App
     public static void main( String[] args )
     {
     	CheckoutService service = new CheckoutServiceImpl();
-    	service.scanItem("A");
-    	service.scanItem("A");
-    	service.scanItem("A");
-    	service.scanItem("A");
-    	service.scanItem("A");
-    	service.scanItem("A");
-    	service.scanItem("B");
-    	service.scanItem("B");
-    	service.scanItem("B");
-    	service.scanItem("B");
-    	service.scanItem("E");
-    	service.scanItem("E");
-    	service.scanItem("E");
-    	service.scanItem("F");
+    	service.scanAndAddItem("A");
+    	service.scanAndAddItem("A");
+    	service.scanAndAddItem("A");
+    	service.scanAndAddItem("A");
+    	service.scanAndAddItem("A");
+    	service.scanAndAddItem("A");
+    	service.scanAndAddItem("B");
+    	service.scanAndAddItem("B");
+    	service.scanAndAddItem("B");
+    	service.scanAndAddItem("B");
+    	service.scanAndAddItem("E");
+    	service.scanAndAddItem("E");
+    	service.scanAndAddItem("E");
+    	service.scanAndAddItem("F");
         System.out.println(service.getTotalPrice());
     }
 }
